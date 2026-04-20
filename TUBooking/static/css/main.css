@@ -1,0 +1,11 @@
+h1 {
+    color: brown;
+}
+
+input[type=number]{
+    text-align: right;
+}
+
+input[type=text]{
+    background-color: bisque;
+}

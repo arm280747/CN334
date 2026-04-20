@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Person{% endblock %}
+
+{% block content %}
+
+    <h1>LOGIN</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        </table>
+        <a href="{% url 'home' %}"></a><button type="submit" style="margin-left: 100px;">Login</button></a>
+    </form>
+
+{%endblock%}
