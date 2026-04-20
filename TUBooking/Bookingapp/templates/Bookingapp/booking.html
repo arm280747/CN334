@@ -26,7 +26,7 @@
                     Dropdown
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="{% url 'booked' %}">Booked</a></li>
                     <li><a class="dropdown-item" href="#">Another action</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -49,13 +49,15 @@
             <th>Room Name</th>
             <th>Room Info</th>
             <th>Room Capacity</th>
+            <th>Booking</th>
         </tr>
         {% for room in Roomlist %}
         <tr>
-            <td>{{room.room_id}} <a href="{% url 'confirmbooking' id=room.room_id %}" class="btn btn-info">Booking</a> </td>
+            <td>{{room.room_id}}  </td>
             <td>{{room.room_name}}</td>
             <td>{{room.room_info}}</td>
             <td>{{room.room_capacity}}</td>
+            <td><a href="{% url 'confirmbooking' id=room.room_id %}" class="btn btn-info">Booking</a></td>
         </tr>
         {% endfor %}    
     </table>
