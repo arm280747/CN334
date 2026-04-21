@@ -43,7 +43,7 @@ def Home(request):
 
     return render(request, "Bookingapp/home.html", data)
 
-def Booking(request):
+def room_booking(request):
 
     username = request.session.get('username')
 

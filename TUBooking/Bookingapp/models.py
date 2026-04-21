@@ -30,8 +30,8 @@ class Booking(models.Model):
 class LoginForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = {'username', 'password'}
-        lebels = {
+        fields = ('username', 'password')
+        labels = {
             'username': 'Username',
             'password': 'Password'
         }
@@ -39,8 +39,8 @@ class LoginForm(forms.ModelForm):
 class confirmbookingForm(forms.ModelForm):
     class Meta:
         model = Booking
-        fields = {'booking_type', 'date_start','date_end','week_type','time_start','time_end'}
-        lebels = {
+        fields = ('booking_type', 'date_start','date_end','week_type','time_start','time_end')
+        labels = {
 
             'booking_type': 'Booking type',
             'date_start': 'Date start',
