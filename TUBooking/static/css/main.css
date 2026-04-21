@@ -1,11 +1,504 @@
-h1 {
-    color: brown;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ─── Design Tokens ───────────────────────────────────────── */
+:root {
+    --navy: #0A043B;
+    --teal: #009CA6;
+    --teal-dark: #007B83;
+    --bg: #F4F6F9;
+    --white: #FFFFFF;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 3px rgba(0, 0, 0, .08), 0 4px 16px rgba(0, 0, 0, .06);
 }
 
-input[type=number]{
-    text-align: right;
+/* ─── Reset & Base ────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-input[type=text]{
-    background-color: bisque;
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.6;
+
+    /* subtle dot grid */
+    background-image: radial-gradient(circle, #c8d8e8 1px, transparent 1px);
+    background-size: 28px 28px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--teal);
+}
+
+a:hover {
+    color: var(--teal-dark);
+}
+
+/* ─── Navbar ──────────────────────────────────────────────── */
+.tu-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
+    overflow: visible;
+}
+
+.tu-navbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    overflow: visible;
+}
+
+.tu-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--navy) !important;
+    white-space: nowrap;
+}
+
+.tu-brand-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--teal);
+    flex-shrink: 0;
+}
+
+.tu-nav-links {
+    display: flex;
+    list-style: none;
+    margin-bottom: 0;
+    gap: 4px;
+    flex: 1;
+}
+
+.tu-nav-link {
+    display: block;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--muted);
+    transition: background .15s, color .15s;
+}
+
+.tu-nav-link:hover {
+    background: #f3f4f6;
+    color: var(--navy);
+}
+
+.tu-nav-link.active {
+    background: #e8f7f8;
+    color: var(--teal);
+    font-weight: 600;
+}
+
+.tu-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.tu-user-badge {
+    font-size: 0.82rem;
+    color: var(--muted);
+}
+
+.tu-user-badge strong {
+    color: var(--navy);
+}
+
+/* ─── Main Layout ─────────────────────────────────────────── */
+.tu-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
+
+/* ─── Page Header ─────────────────────────────────────────── */
+.tu-page-header {
+    margin-bottom: 28px;
+}
+
+.tu-page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0;
+}
+
+.tu-page-header p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-top: 4px;
+}
+
+/* ─── Cards ───────────────────────────────────────────────── */
+.tu-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px;
+    border: 1px solid var(--border);
+}
+
+/* ─── Tables ──────────────────────────────────────────────── */
+.tu-table-wrap {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.tu-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.tu-table thead {
+    background: var(--navy);
+    color: var(--white);
+}
+
+.tu-table thead th {
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    border: none;
+}
+
+.tu-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background .12s;
+}
+
+.tu-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.tu-table tbody tr:hover {
+    background: #f8fafa;
+}
+
+.tu-table tbody td {
+    padding: 14px 20px;
+    color: var(--text);
+    vertical-align: middle;
+}
+
+.room-id-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    background: #e8f7f8;
+    color: var(--teal-dark);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* ─── Buttons ─────────────────────────────────────────────── */
+.btn-tu-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, transform .1s, box-shadow .15s;
+    font-family: inherit;
+}
+
+.btn-tu-primary:hover {
+    background: var(--teal-dark);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 156, 166, .3);
+}
+
+.btn-tu-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+    font-family: inherit;
+}
+
+.btn-tu-secondary:hover {
+    background: #f3f4f6;
+    color: var(--navy);
+}
+
+.btn-tu-danger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+    font-family: inherit;
+}
+
+.btn-tu-danger:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* ─── Forms ───────────────────────────────────────────────── */
+.tu-form-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+}
+
+.tu-form-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: #fafafa;
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+}
+
+.tu-form-input:focus {
+    border-color: var(--teal);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(0, 156, 166, .15);
+}
+
+.tu-form-group {
+    margin-bottom: 18px;
+}
+
+/* Override Bootstrap table inputs that appear in form.as_table */
+input[type=text],
+input[type=password],
+input[type=search],
+input[type=date],
+input[type=time],
+input[type=number],
+select,
+textarea {
+    width: 100%;
+    padding: 9px 13px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: #fafafa;
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--teal);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(0, 156, 166, .15);
+}
+
+/* ─── Login Page ──────────────────────────────────────────── */
+.tu-login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.tu-login-card {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(10, 4, 59, .12);
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 420px;
+}
+
+.tu-login-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.tu-login-logo-dot {
+    width: 14px;
+    height: 14px;
+    background: var(--teal);
+    border-radius: 50%;
+}
+
+.tu-login-logo span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.tu-login-subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-bottom: 32px;
+}
+
+.tu-login-table th {
+    padding: 0 12px 6px 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--navy);
+    white-space: nowrap;
+    width: 1%;
+}
+
+.tu-login-table td {
+    padding-bottom: 14px;
+}
+
+.tu-login-table input {
+    width: 100%;
+}
+
+/* ─── Room Info Strip ─────────────────────────────────────── */
+.tu-room-strip {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a1060 100%);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    color: var(--white);
+    margin-bottom: 24px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+
+.tu-room-strip .label {
+    font-size: 0.75rem;
+    opacity: .7;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.tu-room-strip .value {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+/* ─── Dashboard Welcome ───────────────────────────────────── */
+.tu-welcome-banner {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a1060 100%);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    color: var(--white);
+    margin-bottom: 28px;
+}
+
+.tu-welcome-banner h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+}
+
+.tu-welcome-banner p {
+    color: rgba(255, 255, 255, .65);
+    font-size: 0.88rem;
+    margin: 0;
+}
+
+.tu-welcome-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* ─── Stat Cards ──────────────────────────────────────────── */
+.tu-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.tu-stat-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.tu-stat-card .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.tu-stat-card .stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-top: 4px;
+    line-height: 1;
+}
+
+.tu-stat-card .stat-sub {
+    font-size: 0.8rem;
+    color: var(--teal);
+    margin-top: 6px;
 }

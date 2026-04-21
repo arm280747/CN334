@@ -1,51 +1,39 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Create Person{% endblock %}
+{% block title %}Dashboard | TU Booking{% endblock %}
+{% block nav_home %}active{% endblock %}
+{% block nav_user %}<span class="tu-user-badge">Welcome, <strong>{{ username }}</strong></span>{% endblock %}
+{% block nav_logout %}<a href="{% url 'logout' %}" class="btn-tu-danger">Logout</a>{% endblock %}
 
 {% block content %}
 
-    <h1>Home</h1>
-    {{ username }}
-
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="{% url 'booking' %}">Booking</a>
-                </li>
-                <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{% url 'booked' %}">Booked</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            </div>
+    <!-- Welcome Banner -->
+    <div class="tu-welcome-banner">
+        <h2>Welcome back, {{ username }} 👋</h2>
+        <p>Manage your room reservations and view your upcoming bookings from here.</p>
+        <div class="tu-welcome-actions">
+            <a href="{% url 'booking' %}" class="btn-tu-primary">
+                Browse Rooms &rarr;
+            </a>
+            <a href="{% url 'booked' %}" class="btn-tu-secondary" style="color:#fff; border-color: rgba(255,255,255,.3);">
+                View My Bookings
+            </a>
         </div>
-    </nav>
+    </div>
 
-    <a href="{% url 'logout' %}"><button type="submit" style="margin-left: 100px;">Logout</button></a>
+    <!-- Quick Stats -->
+    <div class="tu-stats">
+        <div class="tu-stat-card">
+            <div class="stat-label">Available Rooms</div>
+            <div class="stat-value" style="color: var(--teal);">&#x2022;</div>
+            <div class="stat-sub"><a href="{% url 'booking' %}">Browse all rooms</a></div>
+        </div>
+        <div class="tu-stat-card">
+            <div class="stat-label">My Bookings</div>
+            <div class="stat-value" style="color: var(--teal);">&#x2022;</div>
+            <div class="stat-sub"><a href="{% url 'booked' %}">See all bookings</a></div>
+        </div>
+    </div>
 
-
-{%endblock%}
+{% endblock %}

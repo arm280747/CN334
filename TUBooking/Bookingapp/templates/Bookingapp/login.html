@@ -1,17 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Create Person{% endblock %}
+{% block title %}Login | TU Booking{% endblock %}
 
 {% block content %}
+<div class="tu-login-wrap">
+    <div class="tu-login-card">
 
-    <h1>LOGIN</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <table>
-        {{ form.as_table }}
-        </table>
-        <a href="{% url 'home' %}"></a><button type="submit" style="margin-left: 100px;">Login</button></a>
-    </form>
+        <div class="tu-login-logo">
+            <div class="tu-login-logo-dot"></div>
+            <span>TU Booking</span>
+        </div>
+        <p class="tu-login-subtitle">Sign in to manage your room reservations</p>
 
-{%endblock%}
+        <form method="POST">
+            {% csrf_token %}
+            <table class="tu-login-table" style="width:100%">
+                {{ form.as_table }}
+            </table>
+            <button class="btn-tu-primary" style="width:100%; justify-content: center; margin-top: 8px;" type="submit">
+                Sign In &rarr;
+            </button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

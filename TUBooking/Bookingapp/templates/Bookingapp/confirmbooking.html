@@ -1,67 +1,64 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Create Person{% endblock %}
+{% block title %}Confirm Booking | TU Booking{% endblock %}
+{% block nav_rooms %}active{% endblock %}
+{% block nav_user %}<span class="tu-user-badge">Logged in as <strong>{{ User }}</strong></span>{% endblock %}
+{% block nav_logout %}<a href="{% url 'logout' %}" class="btn-tu-danger">Logout</a>{% endblock %}
 
 {% block content %}
 
-    <h1>confurmbooking</h1>
+    <div class="tu-page-header">
+        <h1>Confirm Your Booking</h1>
+        <p>Review room details and fill in your booking information below.</p>
+    </div>
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="{% url 'booking' %}">Booking</a>
-                </li>
-                <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            </div>
+    <!-- Room Info Strip -->
+    <div class="tu-room-strip">
+        <div>
+            <div class="label">Room ID</div>
+            <div class="value">{{ roomid }}</div>
         </div>
-    </nav>
-    <h1>{{roomid}}</h1>
-    <p>{{room.room_name}}
-    {{room.room_info}}
-    {{room.room_capacity}}</p>
-    {% if not form.is_valid %}
-        <form method="POST">
-            {% csrf_token %}
-            <table>
-            {{ form.as_table }}
-            </table>
-            
-        <button type="submit" style="margin-left: 100px;">Create</button>
-        </form>
-    {% else %}
-        <p> booking success </p>
-    {% endif %}
+        <div>
+            <div class="label">Room Name</div>
+            <div class="value">{{ room.room_name }}</div>
+        </div>
+        <div>
+            <div class="label">Capacity</div>
+            <div class="value">{{ room.room_capacity }} seats</div>
+        </div>
+        <div>
+            <div class="label">Info</div>
+            <div class="value" style="font-weight:400; font-size: 0.9rem;">{{ room.room_info }}</div>
+        </div>
+    </div>
 
+    <!-- Booking Form -->
+    <div class="tu-card" style="max-width: 620px;">
+        {% if not form.is_valid %}
+            <h3 style="margin-bottom: 20px; font-size: 1rem; color: var(--navy);">Booking Details</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <table class="tu-login-table" style="width:100%">
+                    {{ form.as_table }}
+                </table>
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button class="btn-tu-primary" type="submit" style="flex: 1; justify-content: center;">
+                        Confirm Booking
+                    </button>
+                    <a href="{% url 'booking' %}" class="btn-tu-secondary" style="flex: 1; justify-content: center; text-align: center; padding: 8px 18px;">
+                        &larr; Back to Rooms
+                    </a>
+                </div>
+            </form>
+        {% else %}
+            <div style="text-align: center; padding: 20px 0;">
+                <div style="font-size: 2.5rem; margin-bottom: 12px;">✅</div>
+                <h3 style="color: var(--navy); margin-bottom: 8px;">Booking Confirmed!</h3>
+                <p style="color: var(--muted); margin-bottom: 24px;">Your room has been successfully reserved.</p>
+                <a href="{% url 'booking' %}" class="btn-tu-primary">Book Another Room</a>
+            </div>
+        {% endif %}
+    </div>
 
-    <a href="{% url 'booking' %}"><button type="submit" style="margin-left: 100px;">Back</button></a>
-
-
-{%endblock%}
+{% endblock %}
