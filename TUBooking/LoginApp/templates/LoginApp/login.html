@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Person{% endblock %}
+
+{% block content %}
+
+    <h1>LOGIN</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th>Username</th>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ form.password }} <button type="button" onclick="togglePassword()">Show/Hide</button></td>
+            </tr>
+        </table>
+        <a href="{% url 'home' %}"><button type="submit" style="margin-left: 100px;">Login</button></a>
+    </form>
+
+{%endblock%}
+
+{% block extra_js %}
+    <script src="{% static 'js/login.js' %}"></script>
+{% endblock %}

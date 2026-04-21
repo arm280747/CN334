@@ -8,18 +8,48 @@
 
 {% block content %}
 
-    <!-- Welcome Banner -->
-    <div class="tu-welcome-banner">
-        <h2>Welcome back, {{ username }} 👋</h2>
-        <p>Manage your room reservations and view your upcoming bookings from here.</p>
-        <div class="tu-welcome-actions">
-            <a href="{% url 'booking' %}" class="btn-tu-primary">
-                Browse Rooms &rarr;
-            </a>
-            <a href="{% url 'booked' %}" class="btn-tu-secondary" style="color:#fff; border-color: rgba(255,255,255,.3);">
-                View My Bookings
-            </a>
+<h1>Home</h1>
+<h2>Welcome {{ username }}</h2>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navigation</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'booking' %}">Booking</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'booked' %}">Booked</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
         </div>
+    </div>
     </div>
 
     <!-- Quick Stats -->
@@ -36,4 +66,4 @@
         </div>
     </div>
 
-{% endblock %}
+    {% endblock %}

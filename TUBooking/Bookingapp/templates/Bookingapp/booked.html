@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Booked Room{% endblock %}
+
+{% block content %}
+
+    <h1>Booked Room</h1>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">This is booking</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'booking' %}">Booking</a>
+                </li>
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Dropdown
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'booked' %}">Booked</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            </div>
+        </div>
+    </nav>
+    <table class="table table-hover">
+        <tr>
+            <th>Room ID</th>
+            <th>Room Name</th>
+            <th>Room Info</th>
+            <th>Room Capacity</th>
+            <th>Day of week</th>
+            <th>Time</th>
+        </tr>
+        {% for subject in subjects %}
+            <tr>
+                <td>{{subject.room.room_id}}</td>
+                <td>{{subject.room.room_name}}</td>
+                <td>{{subject.room.room_info}}</td>
+                <td>{{subject.room.room_capacity}}</td>
+                <td>{{subject.date_start}} - {{subject.date_end}}</td>
+                <td>{{subject.time_start}} - {{subject.time_end}}</td>
+            </tr>
+        {% endfor %}
+        {% for tutor in tutorings %}
+            <tr>
+                <td>{{tutor.room.room_id}}</td>
+                <td>{{tutor.room.room_name}}</td>
+                <td>{{tutor.room.room_info}}</td>
+                <td>{{tutor.room.room_capacity}}</td>
+                <td>{{tutor.date_start}} - {{tutor.date_end}}</td>
+                <td>{{tutor.time_start}} - {{tutor.time_end}}</td>
+            </tr>
+        {% endfor %}    
+    </table>
+    <p>this is booking</p>
+    <a href="{% url 'logout' %}"><button type="submit" style="margin-left: 100px;">Logout</button></a>
+
+
+{%endblock%}
