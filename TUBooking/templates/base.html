@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
 <head>
     <meta charset="UTF-8">
@@ -16,8 +16,35 @@
 
 <body>
 
-    {% block extra_js %}{% endblock %}
+    <!-- ── Navbar ──────────────────────────────────────────── -->
+    <header class="tu-navbar">
+        <div class="tu-navbar-inner">
+            <a href="{% url 'home' %}" class="tu-brand">
+                <span class="tu-brand-dot"></span>
+                TU Booking
+            </a>
+
+            <ul class="tu-nav-links">
+                <li><a href="{% url 'home' %}"    class="tu-nav-link {% block nav_home %}{% endblock %}">Home</a></li>
+                <li><a href="{% url 'booking' %}" class="tu-nav-link {% block nav_rooms %}{% endblock %}">Rooms</a></li>
+                <li><a href="{% url 'booked' %}"  class="tu-nav-link {% block nav_booked %}{% endblock %}">My Bookings</a></li>
+            </ul>
+
+            <div class="tu-nav-right">
+                {% block nav_user %}{% endblock %}
+                {% block nav_logout %}{% endblock %}
+            </div>
+        </div>
+    </header>
+
+    <!-- ── Page Content ───────────────────────────────────── -->
+    <main class="tu-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ── Scripts ────────────────────────────────────────── -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 
 </html>

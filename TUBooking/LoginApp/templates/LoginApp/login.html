@@ -1,27 +1,47 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Create Person{% endblock %}
+{% block title %}Login | TU Booking{% endblock %}
 
 {% block content %}
 
-    <h1>LOGIN</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <th>Username</th>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ form.password }} <button type="button" onclick="togglePassword()">Show/Hide</button></td>
-            </tr>
-        </table>
-        <a href="{% url 'home' %}"><button type="submit" style="margin-left: 100px;">Login</button></a>
-    </form>
+<div class="tu-login-wrap">
+    <div class="tu-login-card">
 
-{%endblock%}
+        <div class="tu-login-logo">
+            <span class="tu-login-logo-dot"></span>
+            <span>TU Booking</span>
+        </div>
+        <p class="tu-login-subtitle">ระบบจองห้องเรียน มหาวิทยาลัยธรรมศาสตร์</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <table class="tu-login-table w-100">
+                <tr>
+                    <th>Username</th>
+                    <td>{{ form.username }}</td>
+                </tr>
+                <tr>
+                    <th>Password</th>
+                    <td>
+                        {{ form.password }}
+                        <button type="button" onclick="togglePassword()"
+                            class="btn-tu-secondary mt-2" style="font-size:0.8rem;padding:4px 10px;">
+                            Show / Hide
+                        </button>
+                    </td>
+                </tr>
+            </table>
+
+            <button type="submit" class="btn-tu-primary w-100 mt-4" style="justify-content:center;">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </button>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
 
 {% block extra_js %}
     <script src="{% static 'js/login.js' %}"></script>

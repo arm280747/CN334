@@ -13,65 +13,39 @@
     <p>Select a room below to make a reservation.</p>
 </div>
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">This is booking</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'booking' %}">Booking</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Dropdown
+<div class="tu-table-wrap">
+    <table class="tu-table">
+        <thead>
+            <tr>
+                <th>Room ID</th>
+                <th>Room Name</th>
+                <th>Info</th>
+                <th>Capacity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in Roomlist %}
+            <tr>
+                <td><span class="room-id-badge">{{ room.room_id }}</span></td>
+                <td>{{ room.room_name }}</td>
+                <td>{{ room.room_info }}</td>
+                <td>{{ room.room_capacity }} คน</td>
+                <td>
+                    <a href="{% url 'confirmbooking' id=room.room_id %}" class="btn-tu-primary">
+                        <i class="bi bi-calendar-check"></i> จองห้อง
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'booked' %}">Booked</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
-    </div>
-</nav>
-<table class="table table-hover">
-    <tr>
-        <th>Room ID</th>
-        <th>Room Name</th>
-        <th>Room Info</th>
-        <th>Room Capacity</th>
-        <th>Booking</th>
-    </tr>
-    {% for room in Roomlist %}
-    <tr>
-        <td>{{room.room_id}} </td>
-        <td>{{room.room_name}}</td>
-        <td>{{room.room_info}}</td>
-        <td>{{room.room_capacity}}</td>
-        <td><a href="{% url 'confirmbooking' id=room.room_id %}" class="btn btn-info">Booking</a></td>
-    </tr>
-    {% endfor %}
-</table>
-<p>this is booking</p>
-<a href="{% url 'logout' %}"><button type="submit" style="margin-left: 100px;">Logout</button></a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align:center;color:var(--muted);padding:32px;">
+                    ยังไม่มีห้องในระบบ
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}

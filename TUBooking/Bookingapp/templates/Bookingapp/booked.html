@@ -1,80 +1,92 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Booked Room{% endblock %}
+{% block title %}My Bookings | TU Booking{% endblock %}
+{% block nav_booked %}active{% endblock %}
+{% block nav_user %}<span class="tu-user-badge">Logged in</span>{% endblock %}
+{% block nav_logout %}<a href="{% url 'logout' %}" class="btn-tu-danger">Logout</a>{% endblock %}
 
 {% block content %}
 
-    <h1>Booked Room</h1>
+<div class="tu-page-header">
+    <h1>My Bookings</h1>
+    <p>รายการจองห้องทั้งหมดในระบบ</p>
+</div>
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">This is booking</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="{% url 'booking' %}">Booking</a>
-                </li>
-                <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{% url 'booked' %}">Booked</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            </div>
-        </div>
-    </nav>
-    <table class="table table-hover">
-        <tr>
-            <th>Room ID</th>
-            <th>Room Name</th>
-            <th>Room Info</th>
-            <th>Room Capacity</th>
-            <th>Day of week</th>
-            <th>Time</th>
-        </tr>
-        {% for subject in subjects %}
+<!-- Subject Bookings -->
+<h2 style="font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:12px;">
+    <i class="bi bi-book"></i> การจองสำหรับสอน
+</h2>
+<div class="tu-table-wrap" style="margin-bottom:32px;">
+    <table class="tu-table">
+        <thead>
             <tr>
-                <td>{{subject.room.room_id}}</td>
-                <td>{{subject.room.room_name}}</td>
-                <td>{{subject.room.room_info}}</td>
-                <td>{{subject.room.room_capacity}}</td>
-                <td>{{subject.date_start}} - {{subject.date_end}}</td>
-                <td>{{subject.time_start}} - {{subject.time_end}}</td>
+                <th>Room ID</th>
+                <th>Room Name</th>
+                <th>Subject</th>
+                <th>Days</th>
+                <th>Date Range</th>
+                <th>Time</th>
             </tr>
-        {% endfor %}
-        {% for tutor in tutorings %}
+        </thead>
+        <tbody>
+            {% for subject in subjects %}
             <tr>
-                <td>{{tutor.room.room_id}}</td>
-                <td>{{tutor.room.room_name}}</td>
-                <td>{{tutor.room.room_info}}</td>
-                <td>{{tutor.room.room_capacity}}</td>
-                <td>{{tutor.date_start}} - {{tutor.date_end}}</td>
-                <td>{{tutor.time_start}} - {{tutor.time_end}}</td>
+                <td><span class="room-id-badge">{{ subject.room.room_id }}</span></td>
+                <td>{{ subject.room.room_name }}</td>
+                <td>{{ subject.subject_code }} – {{ subject.subject_name }}</td>
+                <td>{{ subject.days_of_week }}</td>
+                <td>{{ subject.date_start }} – {{ subject.date_end }}</td>
+                <td>{{ subject.time_start }} – {{ subject.time_end }}</td>
             </tr>
-        {% endfor %}    
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">ยังไม่มีการจอง</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
-    <p>this is booking</p>
-    <a href="{% url 'logout' %}"><button type="submit" style="margin-left: 100px;">Logout</button></a>
+</div>
 
+<!-- Tutoring Bookings -->
+<h2 style="font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:12px;">
+    <i class="bi bi-people"></i> การจองสำหรับอบรม/ติว
+</h2>
+<div class="tu-table-wrap">
+    <table class="tu-table">
+        <thead>
+            <tr>
+                <th>Room ID</th>
+                <th>Room Name</th>
+                <th>Title</th>
+                <th>Days</th>
+                <th>Date Range</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tutor in tutorings %}
+            <tr>
+                <td><span class="room-id-badge">{{ tutor.room.room_id }}</span></td>
+                <td>{{ tutor.room.room_name }}</td>
+                <td>{{ tutor.title }}</td>
+                <td>{{ tutor.days_of_week }}</td>
+                <td>{{ tutor.date_start }} – {{ tutor.date_end }}</td>
+                <td>{{ tutor.time_start }} – {{ tutor.time_end }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">ยังไม่มีการจอง</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-{%endblock%}
+<div style="margin-top:24px;">
+    <a href="{% url 'booking' %}" class="btn-tu-primary">
+        <i class="bi bi-calendar-plus"></i> จองห้องเพิ่ม
+    </a>
+</div>
+
+{% endblock %}

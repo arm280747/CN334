@@ -8,62 +8,31 @@
 
 {% block content %}
 
-<h1>Home</h1>
-<h2>Welcome {{ username }}</h2>
-
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navigation</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'booking' %}">Booking</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'booked' %}">Booked</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
+<div class="tu-welcome-banner">
+    <h2>สวัสดี, {{ username }} 👋</h2>
+    <p>ยินดีต้อนรับสู่ระบบจองห้องเรียน มหาวิทยาลัยธรรมศาสตร์</p>
+    <div class="tu-welcome-actions">
+        <a href="{% url 'booking' %}" class="btn-tu-primary">
+            <i class="bi bi-calendar-plus"></i> จองห้องเรียน
+        </a>
+        <a href="{% url 'booked' %}" class="btn-tu-secondary" style="color:#fff;border-color:rgba(255,255,255,.4);">
+            <i class="bi bi-list-check"></i> ดูการจองของฉัน
+        </a>
     </div>
-    </div>
+</div>
 
-    <!-- Quick Stats -->
-    <div class="tu-stats">
-        <div class="tu-stat-card">
-            <div class="stat-label">Available Rooms</div>
-            <div class="stat-value" style="color: var(--teal);">&#x2022;</div>
-            <div class="stat-sub"><a href="{% url 'booking' %}">Browse all rooms</a></div>
-        </div>
-        <div class="tu-stat-card">
-            <div class="stat-label">My Bookings</div>
-            <div class="stat-value" style="color: var(--teal);">&#x2022;</div>
-            <div class="stat-sub"><a href="{% url 'booked' %}">See all bookings</a></div>
-        </div>
+<!-- Quick Stats -->
+<div class="tu-stats">
+    <div class="tu-stat-card">
+        <div class="stat-label">Available Rooms</div>
+        <div class="stat-value" style="color: var(--teal);">&#x2022;</div>
+        <div class="stat-sub"><a href="{% url 'booking' %}">Browse all rooms</a></div>
     </div>
+    <div class="tu-stat-card">
+        <div class="stat-label">My Bookings</div>
+        <div class="stat-value" style="color: var(--teal);">&#x2022;</div>
+        <div class="stat-sub"><a href="{% url 'booked' %}">See all bookings</a></div>
+    </div>
+</div>
 
-    {% endblock %}
+{% endblock %}
