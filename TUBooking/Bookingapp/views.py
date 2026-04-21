@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from Bookingapp.models import User, LoginForm, Room, confirmbookingForm, Booking
+from Bookingapp.models import User, LoginForm, Room, confirmbookingForm, Booking, RegisterForm
 from django.http import HttpResponse
 
 
@@ -91,3 +91,28 @@ def Booked(request):
     }
 
     return render(request, "Bookingapp/booking.html", data)
+
+def Register(request):
+    form = RegisterForm()
+    error = None
+
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+
+            # Check duplicate username
+            if User.objects.filter(username=username).exists():
+                error = 'Username already taken. Please choose another.'
+            else:
+                User.objects.create(
+                    user_id  = form.cleaned_data['user_id'],
+                    name     = form.cleaned_data['name'],
+                    email    = form.cleaned_data['email'],
+                    username = username,
+                    password = form.cleaned_data['password'],
+                    role     = 'lecturer',   # default role
+                )
+                return redirect('login')
+
+    return render(request, 'Bookingapp/register.html', {'form': form, 'error': error})

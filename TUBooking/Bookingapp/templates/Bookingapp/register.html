@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Register | TU Booking{% endblock %}
+
+{% block content %}
+<div class="tu-login-wrap">
+    <div class="tu-login-card" style="max-width: 500px;">
+
+        <div class="tu-login-logo">
+            <div class="tu-login-logo-dot"></div>
+            <span>Create Account</span>
+        </div>
+        <p class="tu-login-subtitle">Register to start booking rooms at TU</p>
+
+        {% if error %}
+        <div style="background: #fff3cd; border: 1px solid #ffc107; color: #856404;
+                    border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 16px;">
+            ⚠️ {{ error }}
+        </div>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+        <div style="background: #f8d7da; border: 1px solid #f5c2c7; color: #842029;
+                    border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 16px;">
+            {% for err in form.non_field_errors %}
+                ❌ {{ err }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <table class="tu-login-table" style="width:100%">
+                {{ form.as_table }}
+            </table>
+            <button class="btn-tu-primary" style="width:100%; justify-content: center; margin-top: 8px;" type="submit">
+                Create Account &rarr;
+            </button>
+        </form>
+
+        <p style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--muted);">
+            Already have an account?
+            <a href="{% url 'login' %}" style="font-weight: 600;">Sign in</a>
+        </p>
+
+    </div>
+</div>
+{% endblock %}

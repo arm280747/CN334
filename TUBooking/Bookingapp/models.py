@@ -41,7 +41,6 @@ class confirmbookingForm(forms.ModelForm):
         model = Booking
         fields = ('booking_type', 'date_start','date_end','week_type','time_start','time_end')
         labels = {
-
             'booking_type': 'Booking type',
             'date_start': 'Date start',
             'date_end': 'Date end',
@@ -50,3 +49,20 @@ class confirmbookingForm(forms.ModelForm):
             'time_end': 'Time end',
         }
 
+class RegisterForm(forms.Form):
+    user_id       = forms.CharField(max_length=30, label='Student/Staff ID')
+    name          = forms.CharField(max_length=100, label='Full Name')
+    email         = forms.EmailField(max_length=50, label='Email')
+    username      = forms.CharField(max_length=50, label='Username')
+    password      = forms.CharField(max_length=50, label='Password',
+                                    widget=forms.PasswordInput)
+    confirm_password = forms.CharField(max_length=50, label='Confirm Password',
+                                       widget=forms.PasswordInput)
+
+    def clean(self):
+        cleaned = super().clean()
+        pw  = cleaned.get('password')
+        cpw = cleaned.get('confirm_password')
+        if pw and cpw and pw != cpw:
+            raise forms.ValidationError('Passwords do not match.')
+        return cleaned
