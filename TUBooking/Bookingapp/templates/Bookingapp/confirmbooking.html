@@ -61,8 +61,7 @@
                     <h5 class="mb-3">ช่วงวันที่ใช้งาน</h5>
                     <div class="row">
                         <div class="col-md-6 mb-3 mb-md-0">
-                            <label for="{{ subject_form.date_start.id_for_label }}" class="form-label">{{
-                                subject_form.date_start.label }}</label>
+                            <label for="{{ subject_form.date_start.id_for_label }}" class="form-label">วันที่เริ่มต้น</label>
                             {{ subject_form.date_start }}
                             {% if subject_form.date_start.errors %}<div class="text-danger">{{
                                 subject_form.date_start.errors }}</div>{% endif %}
@@ -70,8 +69,7 @@
                                 class="text-danger">{{ tutoring_form.date_start.errors }}</div>{% endif %}
                         </div>
                         <div class="col-md-6">
-                            <label for="{{ subject_form.date_end.id_for_label }}" class="form-label">{{
-                                subject_form.date_end.label }}</label>
+                            <label for="{{ subject_form.date_end.id_for_label }}" class="form-label">วันสิ้นสุด</label>
                             {{ subject_form.date_end }}
                             {% if subject_form.date_end.errors %}<div class="text-danger">{{
                                 subject_form.date_end.errors }}</div>{% endif %}
@@ -118,8 +116,7 @@
                     <h5 class="mb-3">เวลาเริ่มต้น — สิ้นสุด</h5>
                     <div class="row">
                         <div class="col-md-6 mb-3 mb-md-0">
-                            <label for="{{ subject_form.time_start.id_for_label }}" class="form-label">{{
-                                subject_form.time_start.label }}</label>
+                            <label for="{{ subject_form.time_start.id_for_label }}" class="form-label">เวลาเริ่มต้น</label>
                             {{ subject_form.time_start }}
                             {% if subject_form.time_start.errors %}<div class="text-danger">{{
                                 subject_form.time_start.errors }}</div>{% endif %}
@@ -127,8 +124,7 @@
                                 class="text-danger">{{ tutoring_form.time_start.errors }}</div>{% endif %}
                         </div>
                         <div class="col-md-6">
-                            <label for="{{ subject_form.time_end.id_for_label }}" class="form-label">{{
-                                subject_form.time_end.label }}</label>
+                            <label for="{{ subject_form.time_end.id_for_label }}" class="form-label">เวลาสิ้นสุด</label>
                             {{ subject_form.time_end }}
                             {% if subject_form.time_end.errors %}<div class="text-danger">{{
                                 subject_form.time_end.errors }}</div>{% endif %}
@@ -146,22 +142,19 @@
                         <h5 class="mb-3">ข้อมูลวิชา</h5>
                         <div class="row">
                             <div class="col-md-4 mb-3 mb-md-0">
-                                <label for="{{ subject_form.subject_code.id_for_label }}" class="form-label">{{
-                                    subject_form.subject_code.label }}</label>
+                                <label for="{{ subject_form.subject_code.id_for_label }}" class="form-label">รหัสวิชา</label>
                                 {{ subject_form.subject_code }}
                                 {% if subject_form.subject_code.errors %}<div class="text-danger">{{
                                     subject_form.subject_code.errors }}</div>{% endif %}
                             </div>
                             <div class="col-md-4 mb-3 mb-md-0">
-                                <label for="{{ subject_form.subject_name.id_for_label }}" class="form-label">{{
-                                    subject_form.subject_name.label }}</label>
+                                <label for="{{ subject_form.subject_name.id_for_label }}" class="form-label">ชื่อวิชา</label>
                                 {{ subject_form.subject_name }}
                                 {% if subject_form.subject_name.errors %}<div class="text-danger">{{
                                     subject_form.subject_name.errors }}</div>{% endif %}
                             </div>
                             <div class="col-md-4">
-                                <label for="{{ subject_form.curriculum.id_for_label }}" class="form-label">{{
-                                    subject_form.curriculum.label }}</label>
+                                <label for="{{ subject_form.curriculum.id_for_label }}" class="form-label">หลักสูตร</label>
                                 {{ subject_form.curriculum }}
                                 {% if subject_form.curriculum.errors %}<div class="text-danger">{{
                                     subject_form.curriculum.errors }}</div>{% endif %}
@@ -175,15 +168,13 @@
                     <div class="mb-4">
                         <h5 class="mb-3">ข้อมูลการอบรม/ติว</h5>
                         <div class="mb-3">
-                            <label for="{{ tutoring_form.title.id_for_label }}" class="form-label">{{
-                                tutoring_form.title.label }}</label>
+                            <label for="{{ tutoring_form.title.id_for_label }}" class="form-label">ชื่อเรื่อง</label>
                             {{ tutoring_form.title }}
                             {% if tutoring_form.title.errors %}<div class="text-danger">{{ tutoring_form.title.errors }}
                             </div>{% endif %}
                         </div>
                         <div class="mb-3">
-                            <label for="{{ tutoring_form.detail.id_for_label }}" class="form-label">{{
-                                tutoring_form.detail.label }}</label>
+                            <label for="{{ tutoring_form.detail.id_for_label }}" class="form-label">รายละเอียด</label>
                             {{ tutoring_form.detail }}
                             {% if tutoring_form.detail.errors %}<div class="text-danger">{{ tutoring_form.detail.errors
                                 }}</div>{% endif %}
