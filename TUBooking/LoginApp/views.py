@@ -4,6 +4,9 @@ from Bookingapp.models import LoginForm
 
 # Create your views here.
 def Login(request):
+    if request.session.get("username"):
+        return redirect("home")
+
     form = LoginForm()
     if request.method == "POST":
         form = LoginForm(request.POST)

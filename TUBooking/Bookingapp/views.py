@@ -10,11 +10,9 @@ from .models import (
 )
 from .utils import range_to_days_list
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-@login_required
 def Home(request):
 
     username = request.session.get("username")
@@ -30,6 +28,8 @@ def Home(request):
 def BookingView(request):
 
     username = request.session.get("username")
+    if username is None:
+        return redirect("login")
 
     room = Room.objects.all()
 
@@ -41,6 +41,8 @@ def BookingView(request):
 def Confirmbooking(request, id):
 
     username = request.session.get("username")
+    if username is None:
+        return redirect("login")
 
     room = Room.objects.get(room_id=id)
     username_save = username
@@ -141,6 +143,8 @@ def check_booking_conflict(
 def Booked(request):
 
     username = request.session.get("username")
+    if username is None:
+        return redirect("login")
 
     subjects = BookingForSubject.objects.all()
     tutorings = BookingForTutoring.objects.all()

@@ -119,3 +119,6 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Redirect to custom login page when @login_required kicks in
+LOGIN_URL = "/login/"
