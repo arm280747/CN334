@@ -25,13 +25,78 @@
 <div class="tu-stats">
     <div class="tu-stat-card">
         <div class="stat-label">Available Rooms</div>
-        <div class="stat-value" style="color: var(--teal);">&#x2022;</div>
+        <div class="stat-value" style="color: var(--teal);">{{ rooms_count }}</div>
         <div class="stat-sub"><a href="{% url 'booking' %}">Browse all rooms</a></div>
     </div>
     <div class="tu-stat-card">
-        <div class="stat-label">My Bookings</div>
-        <div class="stat-value" style="color: var(--teal);">&#x2022;</div>
+        <div class="stat-label">Upcoming Bookings</div>
+        <div class="stat-value" style="color: var(--teal);">{{ my_bookings_count }}</div>
         <div class="stat-sub"><a href="{% url 'booked' %}">See all bookings</a></div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px;">
+    <!-- Available Rooms Table -->
+    <div class="tu-table-wrap">
+        <h2 style="font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:12px;padding: 16px 16px 0;">
+            <i class="bi bi-door-open"></i> Available Rooms
+        </h2>
+        <table class="tu-table">
+            <thead>
+                <tr>
+                    <th>Room ID</th>
+                    <th>Room Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in available_rooms %}
+                <tr>
+                    <td><span class="room-id-badge">{{ room.room_id }}</span></td>
+                    <td>{{ room.room_name }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" style="text-align:center;color:var(--muted);padding:24px;">No rooms available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Upcoming Bookings Table -->
+    <div class="tu-table-wrap">
+        <h2 style="font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:12px;padding: 16px 16px 0;">
+            <i class="bi bi-calendar-event"></i> Upcoming Bookings
+        </h2>
+        <table class="tu-table">
+            <thead>
+                <tr>
+                    <th>Room</th>
+                    <th>Date & Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in upcoming_bookings %}
+                <tr>
+                    <td>
+                        <span class="room-id-badge">{{ booking.room.room_id }}</span>
+                    </td>
+                    <td>
+                        {{ booking.date_start|date:"d M Y" }}<br>
+                        <small style="color:var(--muted);">{{ booking.time_start|time:"H:i" }} - {{ booking.time_end|time:"H:i" }}</small>
+                    </td>
+                    <td>
+                        {% include "Bookingapp/_status_badge.html" with status=booking.status denial=booking.denial_reason %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" style="text-align:center;color:var(--muted);padding:24px;">ไม่มีการจองที่กำลังจะมาถึง</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 

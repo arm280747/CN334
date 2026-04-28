@@ -27,9 +27,35 @@ BOOKING_MODELS = {
 
 @session_login_required
 def Home(request):
+    username = request.session.get("username")
+    available_rooms = Room.objects.filter(is_active=True).order_by("room_id")
+    
+    today = timezone.localdate()
+    
+    # Get upcoming bookings
+    upcoming_subjects = list(BookingForSubject.objects.filter(
+        username=username, date_start__gte=today
+    ))
+    upcoming_tutorings = list(BookingForTutoring.objects.filter(
+        username=username, date_start__gte=today
+    ))
+    
+    # Annotate with type to help template logic if needed, and combine
+    for b in upcoming_subjects:
+        b.type_label = "Subject"
+    for b in upcoming_tutorings:
+        b.type_label = "Tutoring"
+        
+    upcoming_bookings = upcoming_subjects + upcoming_tutorings
+    # Sort by date and then time
+    upcoming_bookings.sort(key=lambda b: (b.date_start, b.time_start))
+
     data = {
-        "username": request.session.get("display_name")
-        or request.session.get("username"),
+        "username": request.session.get("display_name") or username,
+        "rooms_count": available_rooms.count(),
+        "my_bookings_count": len(upcoming_bookings),
+        "available_rooms": available_rooms,
+        "upcoming_bookings": upcoming_bookings,
     }
     return render(request, "Bookingapp/home.html", data)
 
