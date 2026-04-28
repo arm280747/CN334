@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -122,3 +123,10 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Redirect to custom login page when @login_required kicks in
 LOGIN_URL = "/login/"
+
+# TU REST API (used by LoginApp.tu_api for credential verification).
+# Override TU_API_APP_KEY via the environment in production.
+TU_API_URL = os.environ.get(
+    "TU_API_URL", "https://restapi.tu.ac.th/api/v1/auth/Ad/verify"
+)
+TU_API_APP_KEY = os.environ.get("TU_API_APP_KEY", "")
