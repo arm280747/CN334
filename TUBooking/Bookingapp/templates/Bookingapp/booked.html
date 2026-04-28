@@ -10,7 +10,7 @@
 
 <div class="tu-page-header">
     <h1>My Bookings</h1>
-    <p>รายการจองห้องทั้งหมดในระบบ</p>
+    <p>รายการจองห้องทั้งหมดของฉัน</p>
 </div>
 
 <!-- Subject Bookings -->
@@ -21,27 +21,44 @@
     <table class="tu-table">
         <thead>
             <tr>
-                <th>Room ID</th>
-                <th>Room Name</th>
+                <th>Room</th>
                 <th>Subject</th>
                 <th>Days</th>
                 <th>Date Range</th>
                 <th>Time</th>
+                <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             {% for subject in subjects %}
             <tr>
-                <td><span class="room-id-badge">{{ subject.room.room_id }}</span></td>
-                <td>{{ subject.room.room_name }}</td>
+                <td>
+                    <span class="room-id-badge">{{ subject.room.room_id }}</span>
+                    {{ subject.room.room_name }}
+                </td>
                 <td>{{ subject.subject_code }} – {{ subject.subject_name }}</td>
                 <td>{{ subject.days_of_week }}</td>
                 <td>{{ subject.date_start }} – {{ subject.date_end }}</td>
                 <td>{{ subject.time_start }} – {{ subject.time_end }}</td>
+                <td>
+                    {% include "Bookingapp/_status_badge.html" with status=subject.status denial=subject.denial_reason %}
+                </td>
+                <td>
+                    {% if subject.status == "pending" or subject.status == "approved" %}
+                        {% if subject.date_start >= today %}
+                        <form method="POST" action="{% url 'cancel_booking' kind='subject' pk=subject.id %}"
+                              onsubmit="return confirm('ยืนยันยกเลิกการจองนี้?');" style="margin:0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-tu-danger" style="font-size:0.75rem;padding:4px 10px;">ยกเลิก</button>
+                        </form>
+                        {% endif %}
+                    {% endif %}
+                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">ยังไม่มีการจอง</td>
+                <td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">ยังไม่มีการจอง</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -56,27 +73,44 @@
     <table class="tu-table">
         <thead>
             <tr>
-                <th>Room ID</th>
-                <th>Room Name</th>
+                <th>Room</th>
                 <th>Title</th>
                 <th>Days</th>
                 <th>Date Range</th>
                 <th>Time</th>
+                <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             {% for tutor in tutorings %}
             <tr>
-                <td><span class="room-id-badge">{{ tutor.room.room_id }}</span></td>
-                <td>{{ tutor.room.room_name }}</td>
+                <td>
+                    <span class="room-id-badge">{{ tutor.room.room_id }}</span>
+                    {{ tutor.room.room_name }}
+                </td>
                 <td>{{ tutor.title }}</td>
                 <td>{{ tutor.days_of_week }}</td>
                 <td>{{ tutor.date_start }} – {{ tutor.date_end }}</td>
                 <td>{{ tutor.time_start }} – {{ tutor.time_end }}</td>
+                <td>
+                    {% include "Bookingapp/_status_badge.html" with status=tutor.status denial=tutor.denial_reason %}
+                </td>
+                <td>
+                    {% if tutor.status == "pending" or tutor.status == "approved" %}
+                        {% if tutor.date_start >= today %}
+                        <form method="POST" action="{% url 'cancel_booking' kind='tutoring' pk=tutor.id %}"
+                              onsubmit="return confirm('ยืนยันยกเลิกการจองนี้?');" style="margin:0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-tu-danger" style="font-size:0.75rem;padding:4px 10px;">ยกเลิก</button>
+                        </form>
+                        {% endif %}
+                    {% endif %}
+                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">ยังไม่มีการจอง</td>
+                <td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">ยังไม่มีการจอง</td>
             </tr>
             {% endfor %}
         </tbody>

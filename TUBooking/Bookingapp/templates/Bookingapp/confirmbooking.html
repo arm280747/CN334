@@ -26,9 +26,10 @@
 
             {% if success %}
             <div class="alert alert-success" role="alert">
-                จองห้องสำเร็จ!
+                ส่งคำขอจองเรียบร้อย — รออนุมัติจากผู้ดูแลระบบ
             </div>
             <a href="{% url 'booking' %}" class="btn btn-primary">กลับไปหน้าจอง</a>
+            <a href="{% url 'booked' %}" class="btn btn-outline-primary ms-2">ดูคำขอของฉัน</a>
             {% else %}
             <form method="POST" id="bookingForm">
                 {% csrf_token %}

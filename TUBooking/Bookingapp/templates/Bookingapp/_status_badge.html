@@ -1,0 +1,9 @@
+{% if status == "pending" %}
+<span style="background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:600;">รออนุมัติ</span>
+{% elif status == "approved" %}
+<span style="background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:600;">อนุมัติแล้ว</span>
+{% elif status == "rejected" %}
+<span style="background:#fee2e2;color:#991b1b;padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:600;" title="{{ denial }}">ปฏิเสธ</span>
+{% elif status == "cancelled" %}
+<span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:600;">ยกเลิก</span>
+{% endif %}
