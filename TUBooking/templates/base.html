@@ -28,6 +28,10 @@
                 <li><a href="{% url 'home' %}"    class="tu-nav-link {% block nav_home %}{% endblock %}">Home</a></li>
                 <li><a href="{% url 'booking' %}" class="tu-nav-link {% block nav_rooms %}{% endblock %}">Rooms</a></li>
                 <li><a href="{% url 'booked' %}"  class="tu-nav-link {% block nav_booked %}{% endblock %}">My Bookings</a></li>
+                <li><a href="{% url 'calendar' %}" class="tu-nav-link {% block nav_calendar %}{% endblock %}">Calendar</a></li>
+                {% if session_role == "admin" %}
+                <li><a href="{% url 'admin_dashboard' %}" class="tu-nav-link {% block nav_admin %}{% endblock %}">Admin</a></li>
+                {% endif %}
             </ul>
 
             <div class="tu-nav-right">
