@@ -65,6 +65,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "Bookingapp.context_processors.session_role",
             ],
         },
     },
@@ -130,3 +131,15 @@ TU_API_URL = os.environ.get(
     "TU_API_URL", "https://restapi.tu.ac.th/api/v1/auth/Ad/verify"
 )
 TU_API_APP_KEY = os.environ.get("TU_API_APP_KEY", "")
+
+# Email — defaults to console backend so notifications print to stdout in dev.
+# Override via env to use SMTP in production.
+EMAIL_BACKEND = os.environ.get(
+    "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
+)
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@tubooking.local")
+ADMIN_NOTIFY_EMAILS = [
+    e.strip()
+    for e in os.environ.get("ADMIN_NOTIFY_EMAILS", "").split(",")
+    if e.strip()
+]
