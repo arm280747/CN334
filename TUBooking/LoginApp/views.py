@@ -62,7 +62,7 @@ def _sync_user(tu_user):
 
     user, created = User.objects.get_or_create(
         username=tu_user["username"],
-        defaults={**defaults, "password": "", "role": "lecturer"},
+        defaults={**defaults, "role": "lecturer"},
     )
 
     changed = created

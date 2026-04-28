@@ -9,8 +9,8 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.CharField(max_length=50)
     username = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
-    # there 2 role : lecturer, admin
+    # Password is NOT stored — authentication is delegated to the TU REST API.
+    # role: 'lecturer' | 'admin'
     role = models.CharField(max_length=20)
 
 
@@ -114,13 +114,18 @@ class BookingForTutoring(Booking):
     detail = models.CharField(max_length=500)
 
 
-class LoginForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(attrs={"id": "password"}))
+class LoginForm(forms.Form):
+    """Plain form — username and password are forwarded to the TU REST API,
+    never persisted in the database."""
 
-    class Meta:
-        model = User
-        fields = ["username", "password"]
-        labels = {"username": "Username", "password": "Password"}
+    username = forms.CharField(
+        label="Username",
+        widget=forms.TextInput(attrs={"class": "form-control", "id": "username"}),
+    )
+    password = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control", "id": "password"}),
+    )
 
 
 # Form for store booking data
