@@ -46,7 +46,7 @@
                 </td>
                 <td>
                     {% if subject.status == "pending" or subject.status == "approved" %}
-                        {% if subject.date_start > now.date or subject.date_start == now.date and subject.time_start > now.time %}
+                        {% if subject.date_start > today %}
                         <form method="POST" action="{% url 'cancel_booking' kind='subject' pk=subject.id %}"
                               onsubmit="return confirm('ยืนยันยกเลิกการจองนี้?');" style="margin:0;">
                             {% csrf_token %}
@@ -98,7 +98,7 @@
                 </td>
                 <td>
                     {% if tutor.status == "pending" or tutor.status == "approved" %}
-                        {% if tutor.date_start > now.date or tutor.date_start == now.date and tutor.time_start > now.time %}
+                        {% if tutor.date_start > today %}
                         <form method="POST" action="{% url 'cancel_booking' kind='tutoring' pk=tutor.id %}"
                               onsubmit="return confirm('ยืนยันยกเลิกการจองนี้?');" style="margin:0;">
                             {% csrf_token %}
