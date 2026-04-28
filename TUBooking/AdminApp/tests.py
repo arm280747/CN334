@@ -54,6 +54,103 @@ class TestApproveWorkflow(TestCase):
         self.assertIsNotNone(booking.decided_at)
 
 
+class TestCancelBookingDateGuard(TestCase):
+    """FR-BOOK-08: cancel_booking blocks cancellation once the booking start datetime has passed."""
+
+    def setUp(self):
+        self.room = _make_room("CANCEL01")
+        session = self.client.session
+        session["username"] = "testuser"
+        session["role"] = "lecturer"
+        session.save()
+
+    def _post_cancel(self, booking):
+        return self.client.post(f"/booking/cancel/subject/{booking.pk}/")
+
+    def test_cannot_cancel_clearly_past_booking(self):
+        """date_start is days in the past → always blocked."""
+        past = _make_subject_booking(
+            self.room,
+            status="approved",
+            date_start=date.today() - timedelta(days=10),
+            date_end=date.today() - timedelta(days=3),
+            time_start=time(9, 0),
+            time_end=time(11, 0),
+        )
+        self._post_cancel(past)
+        past.refresh_from_db()
+        self.assertEqual(past.status, "approved")   # unchanged
+
+    def test_cannot_cancel_when_booking_already_started(self):
+        """Same-day booking whose time_start is in the past → blocked."""
+        from unittest.mock import patch
+        from django.utils import timezone as tz_module
+        import datetime as dt_module
+
+        frozen_now = tz_module.make_aware(
+            dt_module.datetime.combine(date.today(), time(10, 30))   # 10:30 Bangkok
+        )
+        booking = _make_subject_booking(
+            self.room, status="approved",
+            date_start=date.today(),
+            date_end=date.today() + timedelta(days=7),
+            time_start=time(9, 0),    # started at 09:00 — already past
+            time_end=time(11, 0),
+        )
+        with patch("Bookingapp.views.timezone.now", return_value=frozen_now):
+            self._post_cancel(booking)
+        booking.refresh_from_db()
+        self.assertEqual(booking.status, "approved")   # unchanged
+
+    def test_can_cancel_when_booking_not_yet_started(self):
+        """Same-day booking whose time_start is still in the future → allowed."""
+        from unittest.mock import patch
+        from django.utils import timezone as tz_module
+        import datetime as dt_module
+
+        frozen_now = tz_module.make_aware(
+            dt_module.datetime.combine(date.today(), time(7, 30))    # 07:30 Bangkok
+        )
+        booking = _make_subject_booking(
+            self.room, status="approved",
+            date_start=date.today(),
+            date_end=date.today() + timedelta(days=7),
+            time_start=time(9, 0),    # starts at 09:00 — not yet
+            time_end=time(11, 0),
+        )
+        with patch("Bookingapp.views.timezone.now", return_value=frozen_now):
+            self._post_cancel(booking)
+        booking.refresh_from_db()
+        self.assertEqual(booking.status, "cancelled")
+
+    def test_can_cancel_clearly_future_booking(self):
+        """date_start is tomorrow → always allowed regardless of time."""
+        future = _make_subject_booking(
+            self.room, status="approved",
+            date_start=date.today() + timedelta(days=1),
+            date_end=date.today() + timedelta(days=10),
+            time_start=time(9, 0),
+            time_end=time(11, 0),
+        )
+        self._post_cancel(future)
+        future.refresh_from_db()
+        self.assertEqual(future.status, "cancelled")
+
+    def test_cannot_cancel_another_users_booking(self):
+        other = _make_subject_booking(
+            self.room, status="approved",
+            date_start=date.today() + timedelta(days=3),
+            date_end=date.today() + timedelta(days=10),
+            time_start=time(9, 0),
+            time_end=time(11, 0),
+        )
+        other.username = "someone_else"
+        other.save()
+        self._post_cancel(other)
+        other.refresh_from_db()
+        self.assertEqual(other.status, "approved")   # unchanged
+
+
 class TestRejectWorkflow(TestCase):
     """reject() sets denial_reason and status=rejected."""
 

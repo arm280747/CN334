@@ -170,8 +170,9 @@ def Booked(request):
     tutorings = BookingForTutoring.objects.filter(username=username).order_by(
         "-created_at"
     )
-    today = date.today()
-    data = {"subjects": subjects, "tutorings": tutorings, "today": today}
+    # Pass current Bangkok datetime so the template can compare against date+time_start
+    now = timezone.localtime(timezone.now())
+    data = {"subjects": subjects, "tutorings": tutorings, "now": now}
     return render(request, "Bookingapp/booked.html", data)
 
 
@@ -188,6 +189,13 @@ def cancel_booking(request, kind, pk):
         return redirect("booked")
 
     if booking.status in {"cancelled", "rejected"}:
+        return redirect("booked")
+
+    # Block if the booking's start datetime has already arrived
+    booking_start = timezone.make_aware(
+        datetime.combine(booking.date_start, booking.time_start)
+    )
+    if booking_start <= timezone.now():
         return redirect("booked")
 
     booking.status = "cancelled"
