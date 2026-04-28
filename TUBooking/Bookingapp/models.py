@@ -19,12 +19,35 @@ class Room(models.Model):
     room_name = models.CharField(max_length=100)
     room_capacity = models.IntegerField(default=0)
     room_info = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
+
+
+class Blackout(models.Model):
+    """Date range during which a room (or all rooms) cannot be booked."""
+
+    room = models.ForeignKey(
+        Room,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="blackouts",
+    )
+    date_start = models.DateField()
+    date_end = models.DateField()
+    reason = models.CharField(max_length=200, blank=True, default="")
 
 
 # Constant data
 BOOKING_TYPE_CHOICES = [
     ("subject", "สอนปกติ/ชดเชย/เสริม"),
     ("tutoring", "จัดอบรม/จัดติว"),
+]
+
+STATUS_CHOICES = [
+    ("pending", "รออนุมัติ"),
+    ("approved", "อนุมัติแล้ว"),
+    ("rejected", "ปฏิเสธ"),
+    ("cancelled", "ยกเลิก"),
 ]
 
 CURRICULUM_CHOICES = [
@@ -51,6 +74,16 @@ class Booking(models.Model):
     time_start = models.TimeField()
     time_end = models.TimeField()
     username = models.CharField(max_length=50)
+    display_name = models.CharField(max_length=200, blank=True, default="")
+    email = models.CharField(max_length=200, blank=True, default="")
+
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default="pending"
+    )
+    denial_reason = models.CharField(max_length=300, blank=True, default="")
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    decided_at = models.DateTimeField(null=True, blank=True)
+    decided_by = models.CharField(max_length=50, blank=True, default="")
 
     class Meta:
         abstract = True
@@ -214,3 +247,53 @@ class BookingForTutoringForm(forms.ModelForm):
         """Convert list of selected days to range notation for storage."""
         days = self.cleaned_data.get("days_of_week", [])
         return days_list_to_range(days)
+
+
+class RoomForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = ["room_id", "room_name", "room_capacity", "room_info", "is_active"]
+        labels = {
+            "room_id": "รหัสห้อง",
+            "room_name": "ชื่อห้อง",
+            "room_capacity": "ความจุ",
+            "room_info": "รายละเอียด",
+            "is_active": "เปิดใช้งาน",
+        }
+        widgets = {
+            "room_id": forms.TextInput(attrs={"class": "form-control"}),
+            "room_name": forms.TextInput(attrs={"class": "form-control"}),
+            "room_capacity": forms.NumberInput(attrs={"class": "form-control"}),
+            "room_info": forms.TextInput(attrs={"class": "form-control"}),
+            "is_active": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        }
+
+
+class BlackoutForm(forms.ModelForm):
+    class Meta:
+        model = Blackout
+        fields = ["room", "date_start", "date_end", "reason"]
+        labels = {
+            "room": "ห้อง (เว้นว่าง = ทุกห้อง)",
+            "date_start": "วันที่เริ่มต้น",
+            "date_end": "วันที่สิ้นสุด",
+            "reason": "เหตุผล",
+        }
+        widgets = {
+            "room": forms.Select(attrs={"class": "form-select"}),
+            "date_start": forms.DateInput(
+                attrs={"type": "date", "class": "form-control"}
+            ),
+            "date_end": forms.DateInput(
+                attrs={"type": "date", "class": "form-control"}
+            ),
+            "reason": forms.TextInput(attrs={"class": "form-control"}),
+        }
+
+
+class RejectForm(forms.Form):
+    denial_reason = forms.CharField(
+        label="เหตุผลการปฏิเสธ",
+        max_length=300,
+        widget=forms.Textarea(attrs={"class": "form-control", "rows": 3}),
+    )
