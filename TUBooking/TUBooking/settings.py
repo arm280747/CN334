@@ -143,3 +143,7 @@ ADMIN_NOTIFY_EMAILS = [
     for e in os.environ.get("ADMIN_NOTIFY_EMAILS", "").split(",")
     if e.strip()
 ]
+
+# Session timeout (8 hours = 28800 seconds)
+SESSION_COOKIE_AGE = 28800
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
