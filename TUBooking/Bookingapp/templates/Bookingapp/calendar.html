@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Calendar | TU Booking{% endblock %}
+{% block nav_calendar %}active{% endblock %}
+{% block nav_user %}<span class="tu-user-badge">Logged in</span>{% endblock %}
+{% block nav_logout %}<a href="{% url 'logout' %}" class="btn-tu-danger">Logout</a>{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css">
+<style>
+    .cal-wrapper {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    .cal-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+    .cal-toolbar label {
+        font-weight: 500;
+        font-size: .9rem;
+        color: var(--navy, #1e3a5f);
+        white-space: nowrap;
+    }
+    .cal-toolbar select {
+        border: 1px solid #dde2ee;
+        border-radius: 8px;
+        padding: 7px 14px;
+        font-size: .88rem;
+        background: #fff;
+        color: #374151;
+        cursor: pointer;
+        min-width: 220px;
+    }
+    .cal-legend {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+    .cal-legend-item {
+        display: flex; align-items: center; gap: 8px;
+        font-size: .82rem; color: #374151;
+    }
+    .cal-legend-dot {
+        width: 12px; height: 12px; border-radius: 3px;
+    }
+    #calendar-container {
+        background: #fff;
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    }
+    .fc .fc-button-primary {
+        background: var(--navy, #1e3a5f) !important;
+        border-color: var(--navy, #1e3a5f) !important;
+    }
+    .fc .fc-button-primary:hover {
+        background: #163050 !important;
+        border-color: #163050 !important;
+    }
+    .fc .fc-button-primary:not(:disabled).fc-button-active {
+        background: #f59e0b !important;
+        border-color: #f59e0b !important;
+    }
+    .fc .fc-daygrid-event {
+        border-radius: 4px;
+        font-size: .78rem;
+    }
+    .fc-event-title { font-weight: 500; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="tu-page-header">
+    <h1>ปฏิทินการจองห้อง</h1>
+    <p>ดูการจองทั้งหมดในรูปแบบปฏิทิน — เลือกช่องว่างเพื่อจองทันที</p>
+</div>
+
+<div class="cal-wrapper">
+
+    <!-- Legend + Filter -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:20px;">
+        <div class="cal-legend">
+            <div class="cal-legend-item">
+                <div class="cal-legend-dot" style="background:#f59e0b;"></div> รออนุมัติ
+            </div>
+            <div class="cal-legend-item">
+                <div class="cal-legend-dot" style="background:#10b981;"></div> อนุมัติแล้ว
+            </div>
+            <div class="cal-legend-item">
+                <div class="cal-legend-dot" style="background:#ef4444;"></div> ปิดให้จอง (Blackout)
+            </div>
+        </div>
+        <div class="cal-toolbar">
+            <label for="room-filter"><i class="bi bi-door-open"></i> ห้อง:</label>
+            <select id="room-filter">
+                <option value="">— ทุกห้อง —</option>
+                {% for room in rooms %}
+                <option value="{{ room.room_id }}" {% if selected_room == room.room_id %}selected{% endif %}>
+                    {{ room.room_id }} – {{ room.room_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div id="calendar-container">
+        <div id="calendar"></div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+    var roomSelect = document.getElementById('room-filter');
+
+    function buildEventsUrl() {
+        var room = roomSelect.value;
+        return '{% url "calendar_events" %}' + (room ? '?room=' + encodeURIComponent(room) : '');
+    }
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'th',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek'
+        },
+        events: buildEventsUrl(),
+        height: 'auto',
+        eventTimeFormat: {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        },
+        eventClick: function(info) {
+            var props = info.event.extendedProps || {};
+            var msg = info.event.title
+                + '\n\nสถานะ: ' + (props.status || '-')
+                + '\nผู้จอง: ' + (props.booker || '-');
+            alert(msg);
+        },
+        // Clicking an empty date slot → go to confirm-booking for that date
+        dateClick: function(info) {
+            var room = roomSelect.value;
+            if (!room) { return; }
+            var url = '/confirmbooking/' + encodeURIComponent(room) + '/'
+                    + '?date_start=' + info.dateStr
+                    + '&date_end=' + info.dateStr;
+            window.location.href = url;
+        },
+        noEventsText: 'ไม่มีการจองในช่วงนี้',
+    });
+
+    calendar.render();
+
+    roomSelect.addEventListener('change', function () {
+        // Update URL param without reload so the filter persists on refresh
+        var url = new URL(window.location.href);
+        if (roomSelect.value) {
+            url.searchParams.set('room', roomSelect.value);
+        } else {
+            url.searchParams.delete('room');
+        }
+        window.history.replaceState({}, '', url.toString());
+
+        // Refetch events with new room filter
+        calendar.removeAllEventSources();
+        calendar.addEventSource(buildEventsUrl());
+    });
+});
+</script>
+{% endblock %}
