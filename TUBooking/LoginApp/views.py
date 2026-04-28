@@ -6,6 +6,8 @@ from .tu_api import TUAPIError, verify_credentials
 
 def Login(request):
     if request.session.get("username"):
+        if request.session.get("role") == "admin":
+            return redirect("admin_dashboard")
         return redirect("home")
 
     form = LoginForm()
@@ -33,6 +35,8 @@ def Login(request):
                 )
                 request.session["email"] = tu_user["email"]
 
+                if user.role == "admin":
+                    return redirect("admin_dashboard")
                 return redirect("home")
 
             if error is None:

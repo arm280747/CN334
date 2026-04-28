@@ -14,6 +14,8 @@ def session_login_required(view):
     def wrapper(request, *args, **kwargs):
         if not request.session.get("username"):
             return redirect("login")
+        if request.session.get("role") == "admin":
+            return redirect("admin_dashboard")
         return view(request, *args, **kwargs)
 
     return wrapper
