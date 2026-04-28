@@ -1,0 +1,38 @@
+{% extends "AdminApp/base_admin.html" %}
+{% block title %}Blackouts | Admin{% endblock %}
+
+{% block admin_content %}
+<div class="tu-page-header" style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+        <h1>Blackouts</h1>
+        <p>กำหนดช่วงวันที่ห้องไม่เปิดให้จอง</p>
+    </div>
+    <a href="{% url 'admin_blackout_new' %}" class="btn-tu-primary">+ New Blackout</a>
+</div>
+
+<div class="tu-table-wrap">
+    <table class="tu-table">
+        <thead>
+            <tr><th>Room</th><th>From</th><th>To</th><th>Reason</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+            {% for b in items %}
+            <tr>
+                <td>{{ b.room.room_name|default:"All rooms" }}</td>
+                <td>{{ b.date_start }}</td>
+                <td>{{ b.date_end }}</td>
+                <td>{{ b.reason }}</td>
+                <td>
+                    <form method="POST" action="{% url 'admin_blackout_delete' pk=b.id %}" onsubmit="return confirm('ลบ blackout นี้?');" style="margin:0;">
+                        {% csrf_token %}
+                        <button class="btn-tu-danger" type="submit" style="font-size:0.78rem;padding:4px 10px;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px;">ยังไม่มี blackout</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

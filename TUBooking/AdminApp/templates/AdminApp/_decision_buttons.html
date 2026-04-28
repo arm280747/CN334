@@ -1,0 +1,14 @@
+<div style="display:flex;gap:6px;align-items:flex-start;">
+    <form method="POST" action="{% url 'admin_approve' kind=kind pk=booking.id %}" style="margin:0;">
+        {% csrf_token %}
+        <button class="btn-tu-primary" style="font-size:0.78rem;padding:6px 12px;" type="submit">Approve</button>
+    </form>
+    <details style="margin:0;">
+        <summary style="cursor:pointer;background:#fee2e2;color:#991b1b;padding:6px 12px;border-radius:8px;font-size:0.78rem;font-weight:600;list-style:none;">Reject</summary>
+        <form method="POST" action="{% url 'admin_reject' kind=kind pk=booking.id %}" style="margin-top:8px;background:#fff;padding:10px;border:1px solid #f5c2c7;border-radius:8px;min-width:240px;">
+            {% csrf_token %}
+            {{ reject_form.denial_reason }}
+            <button class="btn-tu-danger" style="font-size:0.78rem;padding:6px 12px;margin-top:6px;" type="submit">Confirm reject</button>
+        </form>
+    </details>
+</div>

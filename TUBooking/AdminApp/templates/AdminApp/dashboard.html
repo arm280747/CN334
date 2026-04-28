@@ -1,0 +1,32 @@
+{% extends "AdminApp/base_admin.html" %}
+{% block title %}Admin Dashboard | TU Booking{% endblock %}
+
+{% block admin_content %}
+<div class="tu-page-header">
+    <h1>Admin Dashboard</h1>
+    <p>ภาพรวมระบบจองห้อง</p>
+</div>
+
+<div class="tu-stats">
+    <div class="tu-stat-card">
+        <div class="stat-label">Pending Approvals</div>
+        <div class="stat-value" style="color:#f59e0b;">{{ pending_count }}</div>
+        <div class="stat-sub"><a href="{% url 'admin_pending' %}">Review now</a></div>
+    </div>
+    <div class="tu-stat-card">
+        <div class="stat-label">Approved this month</div>
+        <div class="stat-value" style="color:#10b981;">{{ approved_this_month }}</div>
+        <div class="stat-sub"><a href="{% url 'admin_report' %}">Open report</a></div>
+    </div>
+    <div class="tu-stat-card">
+        <div class="stat-label">Rooms (active / total)</div>
+        <div class="stat-value">{{ rooms_active }} / {{ rooms_total }}</div>
+        <div class="stat-sub"><a href="{% url 'admin_rooms' %}">Manage rooms</a></div>
+    </div>
+    <div class="tu-stat-card">
+        <div class="stat-label">Blackouts</div>
+        <div class="stat-value">{{ blackouts }}</div>
+        <div class="stat-sub"><a href="{% url 'admin_blackouts' %}">Manage</a></div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "AdminApp/base_admin.html" %}
+{% block title %}Report | Admin{% endblock %}
+
+{% block admin_content %}
+<div class="tu-page-header" style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+        <h1>Usage Report</h1>
+        <p>สถิติการใช้ห้อง (เฉพาะคำขอที่อนุมัติแล้ว)</p>
+    </div>
+    <a href="{% url 'admin_report_csv' %}" class="btn-tu-primary">Download CSV</a>
+</div>
+
+<div class="tu-table-wrap">
+    <table class="tu-table">
+        <thead>
+            <tr><th>Room ID</th><th>Room Name</th><th>Subject bookings</th><th>Tutoring bookings</th><th>Total hours</th></tr>
+        </thead>
+        <tbody>
+            {% for r in rows %}
+            <tr>
+                <td><span class="room-id-badge">{{ r.room_id }}</span></td>
+                <td>{{ r.room_name }}</td>
+                <td>{{ r.subject_count }}</td>
+                <td>{{ r.tutoring_count }}</td>
+                <td>{{ r.total_hours }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px;">ยังไม่มีข้อมูล</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

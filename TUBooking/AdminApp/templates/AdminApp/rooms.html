@@ -1,0 +1,40 @@
+{% extends "AdminApp/base_admin.html" %}
+{% block title %}Rooms | Admin{% endblock %}
+
+{% block admin_content %}
+<div class="tu-page-header" style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+        <h1>Rooms</h1>
+        <p>จัดการห้องเรียน</p>
+    </div>
+    <a href="{% url 'admin_room_new' %}" class="btn-tu-primary">+ New Room</a>
+</div>
+
+<div class="tu-table-wrap">
+    <table class="tu-table">
+        <thead>
+            <tr><th>Room ID</th><th>Name</th><th>Capacity</th><th>Info</th><th>Active</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+            {% for room in rooms %}
+            <tr>
+                <td><span class="room-id-badge">{{ room.room_id }}</span></td>
+                <td>{{ room.room_name }}</td>
+                <td>{{ room.room_capacity }}</td>
+                <td>{{ room.room_info }}</td>
+                <td>{% if room.is_active %}✓{% else %}✗{% endif %}</td>
+                <td style="display:flex;gap:6px;">
+                    <a href="{% url 'admin_room_edit' pk=room.id %}" class="btn-tu-secondary" style="font-size:0.78rem;padding:4px 10px;">Edit</a>
+                    <form method="POST" action="{% url 'admin_room_toggle' pk=room.id %}" style="margin:0;">
+                        {% csrf_token %}
+                        <button class="btn-tu-danger" type="submit" style="font-size:0.78rem;padding:4px 10px;">{% if room.is_active %}Disable{% else %}Enable{% endif %}</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">ยังไม่มีห้อง</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "AdminApp/base_admin.html" %}
+{% block title %}Users | Admin{% endblock %}
+
+{% block admin_content %}
+<div class="tu-page-header">
+    <h1>Users &amp; Roles</h1>
+    <p>กำหนดบทบาทผู้ใช้</p>
+</div>
+
+<div class="tu-table-wrap">
+    <table class="tu-table">
+        <thead>
+            <tr><th>Username</th><th>Name</th><th>Email</th><th>Role</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+            <tr>
+                <td>{{ u.username }}</td>
+                <td>{{ u.name }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.role }}</td>
+                <td>
+                    <form method="POST" action="{% url 'admin_user_role' pk=u.id %}" style="margin:0;display:flex;gap:6px;">
+                        {% csrf_token %}
+                        <select name="role" class="form-select" style="font-size:0.85rem;padding:4px 8px;">
+                            <option value="lecturer" {% if u.role == "lecturer" %}selected{% endif %}>lecturer</option>
+                            <option value="admin"    {% if u.role == "admin" %}selected{% endif %}>admin</option>
+                        </select>
+                        <button class="btn-tu-primary" type="submit" style="font-size:0.78rem;padding:4px 10px;">Save</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px;">ยังไม่มีผู้ใช้</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

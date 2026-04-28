@@ -1,0 +1,25 @@
+{% extends "AdminApp/base_admin.html" %}
+{% block title %}{% if is_edit %}Edit Room{% else %}New Room{% endif %} | Admin{% endblock %}
+
+{% block admin_content %}
+<div class="tu-page-header">
+    <h1>{% if is_edit %}Edit Room{% else %}New Room{% endif %}</h1>
+</div>
+
+<div style="background:#fff;padding:24px;border-radius:12px;max-width:520px;">
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div style="margin-bottom:14px;">
+            <label class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<div style="color:#991b1b;font-size:0.8rem;">{{ field.errors }}</div>{% endif %}
+        </div>
+        {% endfor %}
+        <div style="display:flex;gap:8px;">
+            <button class="btn-tu-primary" type="submit">Save</button>
+            <a href="{% url 'admin_rooms' %}" class="btn-tu-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
