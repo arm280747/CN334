@@ -1,5 +1,6 @@
 from datetime import date, datetime, timedelta
 
+from django.db.models import Q
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -147,12 +148,16 @@ def check_booking_conflict(
 
 
 def check_blackout_conflict(room, date_start, date_end):
-    """Return blackouts that intersect the date range for this room (or globally)."""
+    """Return blackouts that intersect the date range for this room (or globally).
+
+    A blackout with room=NULL applies to all rooms; use Q objects to match both
+    cases because Django's __in lookup does not match NULL FK values.
+    """
     return list(
         Blackout.objects.filter(
             date_start__lte=date_end,
             date_end__gte=date_start,
-        ).filter(room__in=[room, None])
+        ).filter(Q(room=room) | Q(room__isnull=True))
     )
 
 
