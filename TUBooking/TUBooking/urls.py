@@ -8,4 +8,5 @@ urlpatterns = [
     path("", RedirectView.as_view(url="/login/", permanent=False)),
     path("", include("Bookingapp.urls")),
     path("", include("LoginApp.urls")),
+    path("", include("AdminApp.urls")),
 ]

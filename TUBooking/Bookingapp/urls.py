@@ -11,4 +11,7 @@ urlpatterns = [
         name="confirmbooking",
     ),
     path("booked/", views.Booked, name="booked"),
+    path("booking/cancel/<str:kind>/<int:pk>/", views.cancel_booking, name="cancel_booking"),
+    path("calendar/", views.calendar_view, name="calendar"),
+    path("calendar/events/", views.calendar_events_json, name="calendar_events"),
 ]
